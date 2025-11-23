@@ -1,83 +1,168 @@
-# SRU Timetable Automation Web App
+<h1 align="center">🎓 SRU Timetable Automation — Unofficial</h1>
 
-A professional web application for SR University students to upload, view, and manage their timetables.
+<p align="center">
+  A clean, smart and fully automated timetable viewer for SR University students.<br>
+  Upload Excel → Get a beautifully formatted timetable → View free hours → Export everything.
+</p>
 
-## Features
+<p align="center">
+  <img src="https://img.shields.io/badge/Status-Active-success?style=flat-square">
+  <img src="https://img.shields.io/badge/Backend-FastAPI-blue?style=flat-square">
+  <img src="https://img.shields.io/badge/Frontend-Vanilla%20JS-orange?style=flat-square">
+  <img src="https://img.shields.io/badge/Excel-Parser-green?style=flat-square">
+</p>
 
-- ✅ Upload Excel timetable files
-- ✅ Clean, modern UI matching the original design
-- ✅ Automatic parsing of Excel files (handles merged cells, various formats)
-- ✅ Free-time slot visualization
-- ✅ Export to PNG and PDF
-- ✅ Responsive design for all devices
+---
 
-## Project Structure
+## 🌐 Live Demo  
+👉 **https://sru-time-table.vercel.app/**  
 
-```
-SRU TIme Table/
+---
+
+## 📸 Screenshots
+
+### 🏠 Homepage – Upload UI
+> *The main screen where students upload their timetable Excel file.*
+<br>
+
+### 🗓️ Timetable Output
+> *The timetable converted into a clean, readable layout.*
+<br>
+
+### ✔ Free-Time Table
+> *Each hour marked as ❌ Class or ✔ Free for better clarity.*
+<br>
+
+---
+
+## ✨ Overview
+
+Every semester, students receive their timetable as a messy Excel file with merged cells, inconsistent formats, and unreadable layouts.  
+This project solves that.
+
+Upload an Excel timetable → The system parses it → Generates a clean, modern timetable → Lets you export or check free hours.
+
+This tool works for **all years and all batches**, and is built independently as a student solution — not affiliated with SR University.
+
+---
+
+## 🚀 Features
+
+### 📥 Upload & Parse Excel
+- Handles merged cells  
+- Handles different day/time formats  
+- Works for any SRU batch or year  
+
+### 🗓️ Clean Timetable Viewer
+- University-like styling  
+- Fully responsive  
+- No manual formatting needed  
+
+### ✔ Free-Time Table (Single Batch)
+- Marks class hours as ❌  
+- Marks free hours as ✔  
+- Very helpful for daily planning  
+
+### 🔍 Common Free Hours (Two Batches)
+- Compare two timetables  
+- Detect shared free hours  
+- Helps with group projects & meetings  
+
+### 📤 Export Options
+- PNG  
+- PDF  
+- HTML (editable version)  
+
+---
+
+## 🛠️ Tech Stack
+
+### **Frontend**
+- HTML  
+- CSS  
+- Vanilla JavaScript  
+- html-to-image.js  
+
+### **Backend**
+- Python  
+- FastAPI  
+- openpyxl  
+- Uvicorn  
+
+### **Deployment**
+- Frontend → **Vercel**  
+- Backend → **Render**  
+
+---
+
+## 🧱 Architecture
+
+[Frontend Upload UI]
+↓
+[FastAPI Backend]
+— Parses Excel
+— Expands merged cells
+— Extracts class entries
+— Normalizes day/time
+↓
+[JSON Response]
+↓
+[Frontend Renderer → Timetable + Free-Time + Comparison]
+
+---
+
+## 📂 Project Structure
+
+SRU-Time-Table/
 ├── backend/
-│   ├── main.py           # FastAPI backend server
-│   └── requirements.txt  # Python dependencies
+│   ├── main.py
+│   └── requirements.txt
 ├── frontend/
-│   └── index.html        # Frontend web application
-└── README.md             # This file
-```
+│   └── index.html
+└── README.md
 
-## Setup Instructions
+---
 
-### 1. Install Python Dependencies
+## ⚙️ Local Setup
 
+### 1️⃣ Install backend dependencies
 ```bash
 cd backend
 pip install -r requirements.txt
-```
 
-### 2. Start the Backend Server
+2️⃣ Start backend server
 
-```bash
-cd backend
 uvicorn main:app --reload --port 8000
-```
 
-The backend will run on `http://127.0.0.1:8000`
+Runs at → http://127.0.0.1:8000
 
-### 3. Start the Frontend Server
+3️⃣ Start frontend server
 
-Open a new terminal window:
-
-```bash
 cd frontend
 npx http-server -p 8080
-```
 
-Or use any other static file server. The frontend will be available at `http://localhost:8080`
 
-### 4. Use the Application
+⸻
 
-1. Open your browser and go to `http://localhost:8080`
-2. Click "Choose Excel File" and select your timetable Excel file
-3. Click "Load Timetable"
-4. View your timetable with the same beautiful styling as the original
-5. Toggle "Show Free Time" to see available slots
-6. Export as PNG or PDF
+📝 Notes
+	•	This is an independent student project, not an official SRU tool
+	•	Some Excel files may take a bit longer during the first backend load
+	•	No timetable data is stored; everything happens live and temporary
 
-## How It Works
+⸻
 
-1. **Frontend**: User uploads Excel file → sends to backend API
-2. **Backend**: Parses Excel using openpyxl → returns clean JSON
-3. **Frontend**: Renders JSON as beautiful HTML table
-4. **Features**: Free-time toggle, export functionality
+👤 Developer
 
-## Technology Stack
+Built with ❤️ by BATMAN (Rithwik Bandi)
+3rd Year B.Tech — SR University
 
-- **Backend**: Python, FastAPI, openpyxl, uvicorn
-- **Frontend**: HTML, CSS, JavaScript, html-to-image.js
-- **Architecture**: Client-server with REST API
+🔗 LinkedIn:
+https://www.linkedin.com/in/rithwik-bandi-33b794295/
 
-## Notes
+📧 Email:
+ricky_bandi@yahoo.com
 
-- The backend must be running before using the frontend
-- Excel files are parsed server-side for reliability
-- The system handles merged cells, various day formats, and time slot formats automatically
-- CORS is enabled for local development
+💻 GitHub Repo:
+https://github.com/RickyBandi/SRU-TIME-TABLE
 
+---
