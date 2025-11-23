@@ -952,7 +952,7 @@
                 const formData = new FormData();
                 formData.append('file', file);
 
-                const response = await fetch('http://localhost:8000/api/parse', {
+                const response = await fetch('https://sru-time-table.onrender.com/api/parse', {
                     method: 'POST',
                     body: formData
                 });
@@ -1302,7 +1302,7 @@
                 formData.append('fileA', fileA);
                 formData.append('fileB', fileB);
 
-                const response = await fetch('http://localhost:8000/api/compare', {
+                const response = await fetch('https://sru-time-table.onrender.com/api/compare', {
                     method: 'POST',
                     body: formData
                 });
