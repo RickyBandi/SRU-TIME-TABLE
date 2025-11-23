@@ -1,6 +1,6 @@
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, Response
 import openpyxl
 from openpyxl.utils import get_column_letter
 from typing import Dict, List, Optional, Tuple
@@ -239,8 +239,25 @@ def get_class_type(cell_value: str) -> str:
         return 'L'
     return 'L'  # Default to lecture
 
+def extract_batch_from_filename(filename: str) -> str:
+    """Extract batch number from filename (extract only trailing digits)"""
+    if not filename:
+        return "Unknown Batch"
+    
+    # Remove extension (.xlsx, .xls, etc.)
+    name_without_ext = filename.rsplit('.', 1)[0] if '.' in filename else filename
+    
+    # Extract only trailing digits (numeric suffix)
+    # Match one or more digits at the end of the filename
+    match = re.search(r'(\d+)$', name_without_ext)
+    if match:
+        batch_number = match.group(1)
+        return f"Batch - {batch_number}"
+    
+    return "Unknown Batch"
+
 def extract_batch_name(ws) -> str:
-    """Try to extract batch name from the worksheet"""
+    """Try to extract batch name from the worksheet (fallback method)"""
     # Check first few cells
     for row in range(1, min(5, ws.max_row + 1)):
         for col in range(1, min(5, ws.max_column + 1)):
@@ -252,7 +269,7 @@ def extract_batch_name(ws) -> str:
                     return str(cell_value).strip()
     return "Unknown Batch"
 
-def parse_single_file(contents: bytes) -> Dict:
+def parse_single_file(contents: bytes, filename: Optional[str] = None, use_filename_for_batch: bool = True) -> Dict:
     """Parse a single Excel file and return canonical JSON structure"""
     # Load workbook
     wb = openpyxl.load_workbook(io.BytesIO(contents), data_only=True)
@@ -277,8 +294,11 @@ def parse_single_file(contents: bytes) -> Dict:
     if not time_slot_rows:
         raise ValueError("Could not find time slots")
     
-    # Extract batch name
-    batch_name = extract_batch_name(ws)
+    # Extract batch name - use filename if provided and use_filename_for_batch is True
+    if use_filename_for_batch and filename:
+        batch_name = extract_batch_from_filename(filename)
+    else:
+        batch_name = extract_batch_name(ws)
     
     # Build canonical JSON structure
     time_slots_list = [ts[1] for ts in time_slot_rows]
@@ -373,7 +393,9 @@ async def parse_timetable(file: UploadFile = File(...)):
     try:
         # Read file content
         contents = await file.read()
-        response = parse_single_file(contents)
+        # Use filename to extract batch number (last digits)
+        filename = file.filename if file.filename else None
+        response = parse_single_file(contents, filename=filename, use_filename_for_batch=True)
         return JSONResponse(content=response)
         
     except Exception as e:
@@ -397,9 +419,17 @@ async def compare_timetables_endpoint(
                 detail="Both files are identical. Please upload two different batch timetables."
             )
         
-        # Parse both files
-        timetable_a = parse_single_file(contents_a)
-        timetable_b = parse_single_file(contents_b)
+        # Parse both files - use full filenames instead of extracting batch numbers
+        filename_a = fileA.filename if fileA.filename else "File A"
+        filename_b = fileB.filename if fileB.filename else "File B"
+        
+        # Parse without using filename for batch extraction, we'll use full filenames
+        timetable_a = parse_single_file(contents_a, filename=None, use_filename_for_batch=False)
+        timetable_b = parse_single_file(contents_b, filename=None, use_filename_for_batch=False)
+        
+        # Override batch names with full filenames (without extension)
+        timetable_a["batch"] = filename_a.rsplit('.', 1)[0] if '.' in filename_a else filename_a
+        timetable_b["batch"] = filename_b.rsplit('.', 1)[0] if '.' in filename_b else filename_b
         
         # Compare timetables
         comparison_result = compare_timetables(timetable_a, timetable_b)
@@ -413,7 +443,10 @@ async def compare_timetables_endpoint(
 
 @app.get("/")
 async def root():
-    return {"message": "SRU Timetable Parser API", "status": "running"}
+     return Response(
+        content="SRU Timetable Automation API (Unofficial)\nDeveloper: BATMAN\nVersion: 1.0\nStatus: running",
+        media_type="text/plain"
+    )
 
 if __name__ == "__main__":
     import uvicorn
