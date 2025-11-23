@@ -130,6 +130,7 @@ Frontend algorithm highlights empty/unassigned slots.
 User can export the schedule as:
 - PNG  
 - PDF  
+- HTML 
 
 ---
 
