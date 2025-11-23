@@ -41,12 +41,8 @@ Designed for simplicity, reliability, and speed using modern development standar
 SRU Time Table/
 ├── backend/
 │   ├── main.py              # FastAPI backend: upload + parse logic
-│   ├── parsers.py           # Excel processing utilities (merged cells, normalization)
-│   └── requirements.txt     # Python dependencies
 ├── frontend/
 │   ├── index.html           # UI structure
-│   ├── script.js            # Upload, API calls, rendering, export functions
-│   └── styles.css           # Design & responsive layout
 └── README.md                # Project documentation
 ```
 
