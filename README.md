@@ -1,168 +1,217 @@
-<h1 align="center">🎓 SRU Timetable Automation — Unofficial</h1>
+⭐ SRU Timetable Automation — Full Professional README.md
 
-<p align="center">
-  A clean, smart and fully automated timetable viewer for SR University students.<br>
-  Upload Excel → Get a beautifully formatted timetable → View free hours → Export everything.
-</p>
+# SRU Timetable Automation
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Status-Active-success?style=flat-square">
-  <img src="https://img.shields.io/badge/Backend-FastAPI-blue?style=flat-square">
-  <img src="https://img.shields.io/badge/Frontend-Vanilla%20JS-orange?style=flat-square">
-  <img src="https://img.shields.io/badge/Excel-Parser-green?style=flat-square">
-</p>
+A modern full-stack web application designed for SR University students to upload, visualize, and manage their class timetables with clean UI, accurate Excel parsing, and free-time slot detection.
 
 ---
 
-## 🌐 Live Demo  
-👉 **https://sru-time-table.vercel.app/**  
+## 🚀 Live Demo
+
+**Frontend:** https://sru-time-table.vercel.app/  
+**Backend:** https://sru-time-table.onrender.com/
 
 ---
 
-## 📸 Screenshots
+## 📌 Overview
 
-### 🏠 Homepage – Upload UI
-> *The main screen where students upload their timetable Excel file.*
-<br>
+SRU Timetable Automation simplifies the manual process of reading academic timetables by providing:
 
-### 🗓️ Timetable Output
-> *The timetable converted into a clean, readable layout.*
-<br>
+- Automatic Excel timetable parsing  
+- Intelligent merged-cell detection  
+- Free-time slot visualization  
+- Export to PNG / PDF  
+- Fully responsive modern UI  
+- Works on any device (Mobile, Tablet, Desktop)
 
-### ✔ Free-Time Table
-> *Each hour marked as ❌ Class or ✔ Free for better clarity.*
-<br>
-
----
-
-## ✨ Overview
-
-Every semester, students receive their timetable as a messy Excel file with merged cells, inconsistent formats, and unreadable layouts.  
-This project solves that.
-
-Upload an Excel timetable → The system parses it → Generates a clean, modern timetable → Lets you export or check free hours.
-
-This tool works for **all years and all batches**, and is built independently as a student solution — not affiliated with SR University.
+The application follows a client–server architecture with FastAPI-powered backend processing and a lightweight, blazing-fast frontend.
 
 ---
 
-## 🚀 Features
+## ✨ Features
 
-### 📥 Upload & Parse Excel
-- Handles merged cells  
-- Handles different day/time formats  
-- Works for any SRU batch or year  
+### 🧾 Upload & Parse Timetable
+- Supports `.xlsx` Excel files  
+- Handles merged cells, inconsistent formatting, and uneven structures  
+- Converts Excel into clean, structured JSON  
 
-### 🗓️ Clean Timetable Viewer
-- University-like styling  
-- Fully responsive  
-- No manual formatting needed  
+### 🎨 Modern UI
+- Clean SRU-style timetable grid
+- Smooth animations & elegant spacing
+- Works on all screen sizes
 
-### ✔ Free-Time Table (Single Batch)
-- Marks class hours as ❌  
-- Marks free hours as ✔  
-- Very helpful for daily planning  
-
-### 🔍 Common Free Hours (Two Batches)
-- Compare two timetables  
-- Detect shared free hours  
-- Helps with group projects & meetings  
+### 🔍 Free Time Slot Detection
+- Toggle to highlight available free periods  
+- Algorithm checks each day & each period automatically  
 
 ### 📤 Export Options
-- PNG  
-- PDF  
-- HTML (editable version)  
+- Export the timetable as PNG  
+- Export as PDF  
+
+### 🌐 100% Frontend + Backend Separation
+- Frontend handles UI rendering  
+- Backend handles Excel parsing and returns JSON  
 
 ---
 
-## 🛠️ Tech Stack
+## 🏗️ Project Structure
 
-### **Frontend**
-- HTML  
-- CSS  
-- Vanilla JavaScript  
-- html-to-image.js  
-
-### **Backend**
-- Python  
-- FastAPI  
-- openpyxl  
-- Uvicorn  
-
-### **Deployment**
-- Frontend → **Vercel**  
-- Backend → **Render**  
-
----
-
-## 🧱 Architecture
-
-[Frontend Upload UI]
-↓
-[FastAPI Backend]
-— Parses Excel
-— Expands merged cells
-— Extracts class entries
-— Normalizes day/time
-↓
-[JSON Response]
-↓
-[Frontend Renderer → Timetable + Free-Time + Comparison]
-
----
-
-## 📂 Project Structure
-
-SRU-Time-Table/
+SRU Time Table/
 ├── backend/
-│   ├── main.py
-│   └── requirements.txt
+│   ├── main.py              # FastAPI backend server
+│   └── requirements.txt     # Python dependencies
 ├── frontend/
-│   └── index.html
+│   ├── index.html           # Frontend web app
+│   ├── script.js            # Rendering & API logic
+│   └── styles.css           # UI design
 └── README.md
 
 ---
 
-## ⚙️ Local Setup
+## ⚙️ Installation & Setup
 
-### 1️⃣ Install backend dependencies
+### 1️⃣ Clone the Repository
+
 ```bash
+git clone https://github.com/your-username/sru-timetable.git
+cd sru-timetable
+
+
+⸻
+
+🐍 Backend Setup (FastAPI)
+
+Install Dependencies
+
 cd backend
 pip install -r requirements.txt
 
-2️⃣ Start backend server
+Run Backend Server
 
 uvicorn main:app --reload --port 8000
 
-Runs at → http://127.0.0.1:8000
+Server will be available at:
 
-3️⃣ Start frontend server
+http://127.0.0.1:8000
+
+
+⸻
+
+🖥️ Frontend Setup
+
+Start a local static server
 
 cd frontend
 npx http-server -p 8080
 
+Frontend available at:
+
+http://localhost:8080
+
 
 ⸻
 
-📝 Notes
-	•	This is an independent student project, not an official SRU tool
-	•	Some Excel files may take a bit longer during the first backend load
-	•	No timetable data is stored; everything happens live and temporary
+🧠 How It Works (Architecture Flow)
+	1.	User uploads Excel file
+	2.	Frontend sends file → Backend API
+	3.	Backend uses openpyxl
+	•	Reads sheet
+	•	Handles merged cells
+	•	Extracts periods, days, subjects
+	•	Builds structured JSON
+	4.	Frontend renders timetable
+	•	Builds grid UI
+	•	Applies free-time algorithm
+	5.	Export options
+	•	PNG via html-to-image
+	•	PDF via browser / library
 
 ⸻
 
-👤 Developer
+🛠️ Tech Stack
 
-Built with ❤️ by BATMAN (Rithwik Bandi)
-3rd Year B.Tech — SR University
+Backend
+	•	Python
+	•	FastAPI
+	•	openpyxl
+	•	uvicorn
 
-🔗 LinkedIn:
-https://www.linkedin.com/in/rithwik-bandi-33b794295/
+Frontend
+	•	HTML
+	•	CSS
+	•	JavaScript
+	•	html-to-image.js
 
-📧 Email:
-ricky_bandi@yahoo.com
+Deployment
+	•	Frontend: Vercel
+	•	Backend: Render
 
-💻 GitHub Repo:
-https://github.com/RickyBandi/SRU-TIME-TABLE
+⸻
+
+🔄 API Endpoint
+
+POST /parse-timetable
+
+Uploads an Excel file and returns timetable JSON.
+
+Request:
+Multipart Form File (Excel)
+
+Response (example):
+
+{
+  "days": ["Monday", "Tuesday", "Wednesday"],
+  "slots": ["9-10", "10-11", "11-12"],
+  "table": {
+    "Monday": ["Math", "DBMS", "Free"],
+    "Tuesday": ["Free", "AI", "Free"]
+  }
+}
+
+
+⸻
+
+📤 Exporting the Timetable
+
+PNG Export
+
+Uses HTML-to-image to convert DOM table → PNG.
+
+PDF Export
+
+Browser-native or library-based rendering enabled via frontend button.
+
+⸻
+
+❗ Notes
+	•	Backend must be running before opening the frontend locally
+	•	The Excel parsing algorithm handles:
+	•	Merged cells
+	•	Blank cells
+	•	Irregular timetable formats
+	•	CORS enabled for smooth local development
+
+⸻
+
+🧑‍💻 Contributing
+
+Pull requests are welcome.
+Please ensure clean code formatting and add comments for any parsing logic updates.
+
+⸻
+
+📜 License
+
+This project is licensed under the MIT License.
+
+⸻
+
+💬 Contact
+
+For queries or feature requests:
+
+Developer: Ricky
+Email: your email here
+GitHub: your GitHub link
 
 ---
