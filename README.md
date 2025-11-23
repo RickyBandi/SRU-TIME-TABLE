@@ -1,6 +1,7 @@
 # SRU Timetable Automation
 
-A streamlined, high-performance web application built for SR University students to upload, parse, visualize, and export college timetables with precision. The system intelligently processes Excel files — including merged cells, irregular formats, and multi-row structures — and transforms them into a clean timetable UI with modern styling, free-time highlighting, and export tools.
+A high-performance web application built for SR University students to upload, parse, visualize, and export their class timetables with precision.  
+The system intelligently processes messy Excel files — merged cells, irregular layouts, inconsistent formats — and converts them into a clean, modern, interactive timetable UI.
 
 🔗 **Live Frontend**: https://sru-time-table.vercel.app/  
 🔗 **Live Backend**: https://sru-time-table.onrender.com/
@@ -9,29 +10,27 @@ A streamlined, high-performance web application built for SR University students
 
 ## 🏆 Project Highlights
 
-- 📥 **Excel Upload & Processing** — Handles merged cells, irregular layouts, and formatting variations  
-- 🗂️ **Clean Timetable Rendering** — Structured grid view replicating SRU-style layout  
-- 🕒 **Free-Time Slot Detection** — Toggle to highlight available periods  
-- 🖼️ **PNG / PDF Export** — Download high-quality timetable images  
-- 📱 **Fully Responsive Design** — Optimized for desktop, tablet, and mobile  
-- ⚡ **FastAPI Backend + Static Frontend** — Quick load-time, low overhead  
-- 🧱 **Clean Modular Architecture** — Server parses, frontend renders  
-
-Designed for simplicity, reliability, and speed using modern development standards.
+- 📥 **Excel Upload & Parsing** — Automatically detects merged cells & irregular structures  
+- 🗂️ **Clean Timetable Rendering** — Matches SRU style and structure  
+- 🕒 **Free-Time Slot Highlighting** — Toggle mode to view available periods  
+- 🖼️ **Export Tools** — Download timetable as PNG or PDF  
+- 📱 **Fully Responsive UI**  
+- ⚡ **FastAPI Backend + Lightweight Frontend**  
+- 🔄 **Zero dependencies other than FastAPI & openpyxl (built-in in your backend code)**  
 
 ---
 
 ## ⚙️ Tech Stack
 
-| Technology | Purpose |
-|------------|---------|
-| **FastAPI** | Lightning-fast backend API |
-| **openpyxl** | Excel parsing and merged-cell detection |
-| **Uvicorn** | ASGI server for FastAPI |
-| **HTML + CSS + JavaScript** | Lightweight frontend |
-| **html-to-image.js** | PNG export functionality |
-| **Vercel** | Frontend deployment |
-| **Render** | Backend deployment |
+| Technology | Usage |
+|-----------|--------|
+| **FastAPI** | Backend API for Excel processing |
+| **openpyxl** | Excel parsing engine |
+| **Uvicorn** | Local dev server |
+| **HTML + CSS + JS** | Frontend UI |
+| **html-to-image.js** | PNG export |
+| **Vercel** | Frontend hosting |
+| **Render** | Backend hosting |
 
 ---
 
@@ -40,10 +39,13 @@ Designed for simplicity, reliability, and speed using modern development standar
 ```
 SRU Time Table/
 ├── backend/
-│   ├── main.py              # FastAPI backend: upload + parse logic
+│   ├── main.py             # FastAPI backend (Excel parsing + API)
+│   ├── start_backend.sh    # Script to run the backend
 ├── frontend/
-│   ├── index.html           # UI structure
-└── README.md                # Project documentation
+│   ├── index.html          # UI + JS + styles in one file
+│   ├── start_frontend.sh   # Script to run local frontend server
+├── images.png              # Screenshot / preview asset
+└── README.md               # Project documentation
 ```
 
 ---
@@ -52,21 +54,23 @@ SRU Time Table/
 
 ### Prerequisites
 - Python 3.10+
-- Node.js (optional for local static server)
+- Node.js (optional, if running a static dev server)
 
-### Backend Setup
+---
 
-1. Navigate to backend:
+## 🐍 Backend Setup (FastAPI)
+
+1. Navigate to the backend folder:
 ```bash
 cd backend
 ```
 
-2. Install dependencies:
+2. Install required libraries:
 ```bash
-pip install -r requirements.txt
+pip install fastapi uvicorn python-multipart openpyxl
 ```
 
-3. Start the FastAPI backend:
+3. Start the backend:
 ```bash
 uvicorn main:app --reload --port 8000
 ```
@@ -76,18 +80,29 @@ Backend runs at:
 http://127.0.0.1:8000
 ```
 
----
+OR simply run:
 
-### Frontend Setup
-
-1. Navigate to frontend:
 ```bash
-cd frontend
+./start_backend.sh
 ```
 
-2. Start a static server:
+*(Make sure it’s executable: `chmod +x start_backend.sh`)*
+
+---
+
+## 🖥️ Frontend Setup
+
+Inside the `frontend/` folder:
+
+If you have `http-server`:
 ```bash
 npx http-server -p 8080
+```
+
+Or run your provided script:
+
+```bash
+./start_frontend.sh
 ```
 
 Frontend available at:
@@ -99,24 +114,22 @@ http://localhost:8080
 
 ## 🧠 How It Works
 
-### 1️⃣ User uploads an Excel file  
-The frontend sends the file to the backend via `POST /parse-timetable`.
+### 1️⃣ Upload  
+User uploads an Excel timetable file.
 
-### 2️⃣ Backend parses Excel using openpyxl  
-- Detects merged cells  
-- Normalizes days & time slots  
-- Handles missing/empty cells  
-- Builds structured JSON  
+### 2️⃣ Backend Parses  
+FastAPI receives the file → openpyxl reads cells → merged cells handled → cleaned JSON returned.
 
-### 3️⃣ Frontend renders the timetable  
-Using CSS Grid with automatic row/col spanning for merged cells.
+### 3️⃣ Frontend Renders  
+Your custom JavaScript builds a beautiful grid-style timetable UI.
 
-### 4️⃣ Optional: Free-Time Mode  
-Calculates empty/available periods and highlights them.
+### 4️⃣ Free-Time Mode  
+Frontend algorithm highlights empty/unassigned slots.
 
-### 5️⃣ Export Tools  
-- PNG exporting through html-to-image.js  
-- PDF via browser print or PNG conversion  
+### 5️⃣ Export  
+User can export the schedule as:
+- PNG  
+- PDF  
 
 ---
 
@@ -124,10 +137,8 @@ Calculates empty/available periods and highlights them.
 
 ### `POST /parse-timetable`
 
-Upload an Excel file and receive structured timetable JSON.
-
-**Request:**  
-`multipart/form-data` with key `file`
+**Request Type:**  
+`multipart/form-data` with key: `file`
 
 **Response Example:**
 ```json
@@ -146,41 +157,38 @@ Upload an Excel file and receive structured timetable JSON.
 
 ## 🧩 Customization & Extensibility
 
-- Add new parsing logic in `backend/parsers.py`
-- Modify style via `frontend/styles.css`
-- Extend UI interactions in `frontend/script.js`
-- Add new export formats or themes easily
-- Plug additional analytics or timetable features
+- Improve parsing rules inside `backend/main.py`
+- Customize UI styles inside the single-file `index.html`
+- Add animations or themes directly in JS/CSS
+- Add new export modes (SVG, HD PNG, multi-page PDF)
+- Add timetable saving/sharing features
 
 ---
 
-## 📤 Building for Production
+## 📤 Deployment
 
-### Backend
-Hosted on **Render** using production FastAPI server.
+### Frontend (Vercel)
+- Deploy the `frontend/` directory  
+- Select **Static Site**
 
-### Frontend
-Built & deployed on **Vercel** as a static site.
-
-To rebuild:
-```bash
-npm run build
-```
+### Backend (Render)
+- Deploy the FastAPI service  
+- Build command: `pip install fastapi uvicorn python-multipart openpyxl`  
+- Start command: `uvicorn main:app --host 0.0.0.0 --port 10000`
 
 ---
 
 ## 👨‍💼 Author
 
 **Rithwik (Ricky)**  
-Developer passionate about building automation tools, student utilities, and clean UI systems.  
-This project reflects a focus on solving real problems with smart automation and clean design.
+Passionate developer building automation tools for students & real-world utility apps.
 
-- Frontend Live: https://sru-time-table.vercel.app/
-- Backend Live: https://sru-time-table.onrender.com/
+- Frontend: https://sru-time-table.vercel.app/  
+- Backend: https://sru-time-table.onrender.com/
 
 ---
 
 ## 📝 License
 
 MIT License.  
-Free to modify, fork, and enhance.
+Free to use, modify, and distribute.
